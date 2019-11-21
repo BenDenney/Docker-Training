@@ -1,0 +1,14 @@
+FROM node
+#Use the command FROM to specify base image (dependency) to get: can use latest tag, but gets latest by default.
+COPY package.json package.json
+#For this second tutorial we split up the COPY and RUN steps: firstly to copy the files required to install the node package manager, then...
+RUN npm install
+#Use the RUN command with npm to install the dependencies listed in the JSON file now implicitly copied. 
+COPY ./app ./app
+#We now copy the rest, including the server.js file.  This means that the npm is only installed once if only the server.js is changed as it is updated (withot changing the dependencies)- this saves time (optimisation).  npm install will only reru  if the dependencies in package.json change.
+#specify default command for application- use square brackets, with arguments in double quotes (prefferred format)- before we used:
+#serve ./display
+#but this creates a shell within container to run command.
+#Next step would be to build a Docker image using this Dockerfile by (in the same DIR) using the command:
+#docker build . -t "name_of_docker_image".
+CMD ["node", "server.js"]
